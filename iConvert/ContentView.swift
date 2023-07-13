@@ -38,6 +38,12 @@ struct UnitConverter {
         "Mass": massUnits
     ]
     
+    static let defaultUnits: [String: (input: String, output: String)] = [
+        "Distance": (input: "km", output: "m"),
+        "Mass": (input: "kg", output: "lb")
+    ]
+
+    
     static func calcConverted(value: Double, type: String, from: String, to: String) -> Double {
         guard let fromUnit = units[type]?[from],
               let toUnit = units[type]?[to] else {
@@ -65,11 +71,6 @@ struct ContentView: View {
         UnitConverter.units[unitsCategory]
     }
     
-    var defaultUnits: [String: (input: String, output: String)] = [
-        "Distance": (input: "km", output: "m"),
-        "Mass": (input: "kg", output: "lb")
-    ]
-
     
     var body: some View {
         NavigationView {
@@ -125,7 +126,7 @@ struct ContentView: View {
                         }
                     }
                     .onChange(of: unitsCategory) { _ in
-                        guard let units = defaultUnits[unitsCategory] else {
+                        guard let units = UnitConverter.defaultUnits[unitsCategory] else {
                             fatalError("Invalid units category")
                         }
                         inputUnits = units.input
